@@ -13,15 +13,15 @@ jobs:
       - name: Export Confluence Space
         run: |
           curl -X POST
-"https://${{secrets.atlassiandemoivang.atlassian.net}}/wiki/rest/api/longtask/export/space" \
+"https://${{secrets.DOMAIN}}/wiki/rest/api/longtask/export/space" \
            -H "Authorization:Basic $ (echo -n '$
-       {{secrets.ivanroom369@gmail.com}}:$
-       {{secrets.Confluence_api_token}}' |
+       {{secrets.EMAIL}}:$
+       {{secrets.APITOKEN}}' |
        base64)" \
            -H "Content-Type: application/
 json"\
            -d "{\"spaceKey\":\"$
-{{secrets.Spacekey}}\",
+{{secrets.SPACEKEY}}\",
 \"exportType\":\"xml\"}"
            
 
