@@ -1,23 +1,20 @@
-name: Confluence Space Backup 
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 4 * * *' # Todos los días a las 4 AM UTC
-
-jobs:
-  export-space:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Export Confluence Space
+name: Export Confluence Space 
         env:
           AUTH: ${{ secrets.EMAIL }}:${{ secrets.APITOKEN }}
         run: |
           ENCODED_AUTH=$(echo -n "$AUTH" | base64)
-          curl -X POST "https://${{ secrets.DOMAIN }}/wiki/rest/api/longtask/export/space" \
+
+          echo "=== Ejecutando curl ==="
+          RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" -o response.json -X POST "https://${{ secrets.DOMAIN }}/wiki/rest/api/longtask/export/space" \
             -H "Authorization: Basic $ENCODED_AUTH" \
             -H "Content-Type: application/json" \
-            -d "{\"SPACEKEY\":\"${{ secrets.SPACEKEY}}\",\"exportType\":\"xml\"}"
+            -d "{\"spaceKey\":\"${{ secrets.SPACEKEY }}\",\"exportType\":\"xml\"}")
+
+          echo "=== Resultado HTTP ==="
+          echo "$RESPONSE"
+
+          echo "=== Cuerpo de respuesta ==="
+          cat response.json || echo "response.json no existe"
 
            
 
