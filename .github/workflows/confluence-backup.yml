@@ -1,28 +1,24 @@
-name: Confluence Space Backup
+name: Confluence Space Backup 
 
 on:
-  workflow_dispatch: #Permite ejecucion manual
+  workflow_dispatch:
   schedule:
-  - cron: '0 4 * * *' #Todos los dias a las 4 AM UTC
+    - cron: '0 4 * * *' # Todos los días a las 4 AM UTC
 
 jobs:
   export-space:
     runs-on: ubuntu-latest
-
     steps:
       - name: Export Confluence Space
+        env:
+          AUTH: ${{ secrets.EMAIL }}:${{ secrets.APITOKEN }}
         run: |
-          curl -X POST
-"https://${{secrets.DOMAIN}}/wiki/rest/api/longtask/export/space" \
-           -H "Authorization:Basic $ (echo -n '$
-       {{secrets.EMAIL}}:$
-       {{secrets.APITOKEN}}' |
-       base64)" \
-           -H "Content-Type: application/
-json"\
-           -d "{\"spaceKey\":\"$
-{{secrets.SPACEKEY}}\",
-\"exportType\":\"xml\"}"
+          ENCODED_AUTH=$(echo -n "$AUTH" | base64)
+          curl -X POST "https://${{ secrets.DOMAIN }}/wiki/rest/api/longtask/export/space" \
+            -H "Authorization: Basic $ENCODED_AUTH" \
+            -H "Content-Type: application/json" \
+            -d "{\"SPACEKEY\":\"${{ secrets.SPACEKEY}}\",\"exportType\":\"xml\"}"
+
            
 
         
