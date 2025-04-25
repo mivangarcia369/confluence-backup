@@ -1,4 +1,6 @@
 name: Export Confluence Space 
+on:
+   workflow_dispatch:
         env:
           AUTH: ${{ secrets.EMAIL }}:${{ secrets.APITOKEN }}
         run: |
