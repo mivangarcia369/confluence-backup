@@ -1,4 +1,4 @@
-name: Export Confluence Space 
+name: confluence-backup 
 on:
    workflow_dispatch:
    
