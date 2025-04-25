@@ -5,16 +5,16 @@ on:
 jobs:
  export-space:
     runs-on: ubuntu-latest
-     env:
-            AUTH: ${{ secrets.EMAIL }}:${{ secrets.APITOKEN }}       
-            run: |
-          ENCODED_AUTH=$(echo -n "$AUTH" | base64)
+    env:
+     AUTH: ${{ secrets.EMAIL }}:${{ secrets.APITOKEN }}      
+     run: |
+      ENCODED_AUTH=$(echo -n "$AUTH" | base64)
 
-          echo "=== Ejecutando curl ==="
-          RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" -o response.json -X POST "https://${{ secrets.DOMAIN }}/wiki/rest/api/longtask/export/space" \
-            -H "Authorization: Basic $ENCODED_AUTH" \
-            -H "Content-Type: application/json" \
-            -d "{\"spaceKey\":\"${{ secrets.SPACEKEY }}\",\"exportType\":\"xml\"}")
+       echo "=== Ejecutando curl ==="
+       RESPONSE=$(curl -s -w "\nHTTP_CODE:%{http_code}" -o response.json -X POST "https://${{ secrets.DOMAIN }}/wiki/rest/api/longtask/export/space" \
+       -H "Authorization: Basic $ENCODED_AUTH" \
+       -H "Content-Type: application/json" \
+       -d "{\"spaceKey\":\"${{ secrets.SPACEKEY }}\",\"exportType\":\"xml\"}")
 
           echo "=== Resultado HTTP ==="
           echo "$RESPONSE"
